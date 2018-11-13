@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function expedited_article_delivery_menu() {
+  $items = array();
+
+  $items['admin/config/services/expedited-article-delivery'] = array(
+    'title' => 'Expedited Article Delivery',
+    'description' => 'Configure settings for Expedited Article Delivery.',
+    'access arguments' => array('administer expedited article delivery'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('expedited_article_delivery_admin_form'),
+    'file' => 'includes/admin.form.inc',
+  );
+
+  $items['expedited_article_delivery/order'] = array (
+    'page callback' => 'expedited_article_delivery_order_responder',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function expedited_article_delivery_permission() {
+  return array(
+    'administer expedited article delivery' => array(
+      'title' => 'Administer Expedited Article Delivery',
+      'description' => 'Manage the configuration of the Expedited Article Delivery module',
+    ),
+  );
+}
+
+/**
+ * Callback functions
+ */
+function expedited_article_delivery_order_responder() {
+  module_load_include('inc', 'expedited_article_delivery', 'includes/utilities');
+  expedited_article_delivery_order_processor($_GET);
+}
+

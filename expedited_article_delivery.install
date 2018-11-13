@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for this module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+/*
+function expedited_article_delivery_schema() {
+  $schema = array();
+}
+*/

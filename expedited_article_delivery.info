@@ -1,0 +1,8 @@
+name = Expedited Article Delivery 
+description = "Provide checking and automatic article purchasing for authorized users."
+dependencies[] = cas 
+dependencies[] = cas_attributes
+dependencies[] = cas_roles
+files[] = includes/admin.form.inc 
+version = 7.x-dev
+core = 7.x
