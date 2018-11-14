@@ -38,6 +38,152 @@ function expedited_article_delivery_admin_form() {
     '#options' => $formatted_roles,
   );
 
+  $form['expedited_article_delivery_order_type_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Order Type ID'),
+    '#description' => t("The numeric key for the order type to be used in Reprints API calls."),
+    '#default_value' => variable_get('expedited_article_delivery_order_type_id', '4'),
+  );
+
+  $form['expedited_article_delivery_delivery_method_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Delivery Method ID'),
+    '#description' => t("The numeric key for the delivery method to be used in Reprints API calls."),
+    '#default_value' => variable_get('expedited_article_delivery_delivery_method_id', '5'),
+  );
+
+  $form['expedited_article_delivery_debug'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Debug Mode'),
+    '#description' => t("If selected, run Reprints API calls on test server."),
+    '#default_value' => variable_get('expedited_article_delivery_debug', TRUE),
+  );
+
+  $form['credentials'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Reprints API Credentials'),
+  );
+
+  $form['credentials']['expedited_article_delivery_user_firstname'] = array(
+    '#type' => 'textfield',
+    '#title' => t('User First Name'),
+    '#description' => t("The first name of the user account making Reprints API calls."),
+    '#default_value' => variable_get('expedited_article_delivery_user_firstname', ''),
+  );
+
+  $form['credentials']['expedited_article_delivery_user_lastname'] = array(
+    '#type' => 'textfield',
+    '#title' => t('User Last Name'),
+    '#description' => t("The last name of the user account making Reprints API calls."),
+    '#default_value' => variable_get('expedited_article_delivery_user_lastname', ''),
+  );
+
+  $form['credentials']['expedited_article_delivery_user_email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('User Email'),
+    '#description' => t("The email address of the user account making Reprints API calls."),
+    '#default_value' => variable_get('expedited_article_delivery_user_email', ''),
+  );
+
+  $form['credentials']['production'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Reprints API Production Credentials'),
+  );
+
+  $form['credentials']['production']['expedited_article_delivery_production_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Production URL'),
+    '#description' => t("The URL for the production Reprints server."),
+    '#default_value' => variable_get('expedited_article_delivery_production_url', ''),
+  );
+
+  $form['credentials']['production']['expedited_article_delivery_production_username'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Production Username'),
+    '#description' => t("The Username for the production Reprints server."),
+    '#default_value' => variable_get('expedited_article_delivery_production_username', ''),
+  );
+
+  $form['credentials']['production']['expedited_article_delivery_production_password'] = array(
+    '#type' => 'password',
+    '#title' => t('Production Password'),
+    '#description' => t("The Password for the production Reprints server."),
+    '#default_value' => variable_get('expedited_article_delivery_production_password', ''),
+  );
+
+  $form['credentials']['test'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Reprints API Test Credentials'),
+  );
+
+  $form['credentials']['test']['expedited_article_delivery_test_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Test URL'),
+    '#description' => t("The URL for the test Reprints server."),
+    '#default_value' => variable_get('expedited_article_delivery_test_url', ''),
+  );
+
+  $form['credentials']['test']['expedited_article_delivery_test_username'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Test Username'),
+    '#description' => t("The Username for the test Reprints server."),
+    '#default_value' => variable_get('expedited_article_delivery_test_username', ''),
+  );
+
+  $form['credentials']['test']['expedited_article_delivery_test_password'] = array(
+    '#type' => 'password',
+    '#title' => t('Test Password'),
+    '#description' => t("The Password for the test Reprints server."),
+    '#default_value' => variable_get('expedited_article_delivery_test_password', ''),
+  );
+
+  $form['profile_defaults'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Reprints API Placeholders'),
+  );
+
+  $form['profile_defaults']['expedited_article_delivery_default_company'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default Company'),
+    '#description' => t("The default company to be used when making Reprints API requests."),
+    '#default_value' => variable_get('expedited_article_delivery_default_company', ''),
+  );
+
+  $form['profile_defaults']['expedited_article_delivery_default_address'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default Address'),
+    '#description' => t("The default address to be used when making Reprints API requests."),
+    '#default_value' => variable_get('expedited_article_delivery_default_address', ''),
+  );
+
+  $form['profile_defaults']['expedited_article_delivery_default_city'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default City'),
+    '#description' => t("The default city to be used when making Reprints API requests."),
+    '#default_value' => variable_get('expedited_article_delivery_default_city', ''),
+  );
+
+  $form['profile_defaults']['expedited_article_delivery_default_state'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default State'),
+    '#description' => t("The default state (using a 2 letter code, for example 'FL') to be used when making Reprints API requests."),
+    '#default_value' => variable_get('expedited_article_delivery_default_state', ''),
+  );
+
+  $form['profile_defaults']['expedited_article_delivery_default_country'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default Country'),
+    '#description' => t("The default country (using a 2 letter code, for example 'US') to be used when making Reprints API requests."),
+    '#default_value' => variable_get('expedited_article_delivery_default_country', ''),
+  );
+
+  $form['profile_defaults']['expedited_article_delivery_default_phone'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default Phone Number'),
+    '#description' => t("The default phone number to be used when making Reprints API requests."),
+    '#default_value' => variable_get('expedited_article_delivery_default_phone', ''),
+  );
+
   $form['save_configuration'] = array(
     '#type' => 'submit',
     '#name' => 'saveConfiguration',
@@ -60,8 +206,30 @@ function expedited_article_delivery_admin_form_submit($form, &$form_state) {
     form_set_error('expedited_article_delivery_spreadsheet_key', t('Spreadsheet key cannot be blank.'));
   }
   else {
-    drupal_set_message("Your configurations have been saved.");
     variable_set('expedited_article_delivery_spreadsheet_key', $form_state['values']['expedited_article_delivery_spreadsheet_key']);
     variable_set('expedited_article_delivery_allowed_roles', $form_state['values']['expedited_article_delivery_allowed_roles']);
+    variable_set('expedited_article_delivery_order_type_id', $form_state['values']['expedited_article_delivery_order_type_id']);
+    variable_set('expedited_article_delivery_delivery_method_id', $form_state['values']['expedited_article_delivery_delivery_method_id']);
+    variable_set('expedited_article_delivery_debug', $form_state['values']['expedited_article_delivery_debug']);
+    variable_set('expedited_article_delivery_user_firstname', $form_state['values']['expedited_article_delivery_user_firstname']);
+    variable_set('expedited_article_delivery_user_lastname', $form_state['values']['expedited_article_delivery_user_lastname']);
+    variable_set('expedited_article_delivery_user_email', $form_state['values']['expedited_article_delivery_user_email']);
+    variable_set('expedited_article_delivery_production_url', $form_state['values']['expedited_article_delivery_production_url']);
+    variable_set('expedited_article_delivery_production_username', $form_state['values']['expedited_article_delivery_production_username']);
+    if (!empty($form_state['values']['expedited_article_delivery_production_password'])) {
+      variable_set('expedited_article_delivery_production_password', $form_state['values']['expedited_article_delivery_production_password']);
+    }
+    variable_set('expedited_article_delivery_test_url', $form_state['values']['expedited_article_delivery_test_url']);
+    variable_set('expedited_article_delivery_test_username', $form_state['values']['expedited_article_delivery_test_username']);
+    if (!empty($form_state['values']['expedited_article_delivery_test_password'])) {
+      variable_set('expedited_article_delivery_test_password', $form_state['values']['expedited_article_delivery_test_password']);
+    }
+    variable_set('expedited_article_delivery_default_company', $form_state['values']['expedited_article_delivery_default_company']);
+    variable_set('expedited_article_delivery_default_address', $form_state['values']['expedited_article_delivery_default_address']);
+    variable_set('expedited_article_delivery_default_city', $form_state['values']['expedited_article_delivery_default_city']);
+    variable_set('expedited_article_delivery_default_state', $form_state['values']['expedited_article_delivery_default_state']);
+    variable_set('expedited_article_delivery_default_country', $form_state['values']['expedited_article_delivery_default_country']);
+    variable_set('expedited_article_delivery_default_phone', $form_state['values']['expedited_article_delivery_default_phone']);
+    drupal_set_message("Your configurations have been saved.");
   }
 }
