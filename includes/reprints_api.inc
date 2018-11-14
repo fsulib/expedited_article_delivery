@@ -1,0 +1,177 @@
+<?php
+
+function expedited_article_delivery_reprints_order($args) {
+  define ('NS', 'http://reprintsdesk.com/webservices/');
+  $reprints_url = NULL;
+  $reprints_username = NULL;
+  $reprints_password = NULL;
+
+  if(variable_get('expedited_article_delivery_debug')) 
+  {
+    $reprints_url = variable_get('expedited_article_delivery_test_url');
+    $reprints_username = variable_get('expedited_article_delivery_test_username');
+    $reprints_password = variable_get('expedited_article_delivery_test_password');
+  }
+  else 
+  {
+    $reprints_url = variable_get('expedited_article_delivery_production_url');
+    $reprints_username = variable_get('expedited_article_delivery_production_username');
+    $reprints_password = variable_get('expedited_article_delivery_production_password');
+  }
+
+  // Connect to web service
+  $client = new SOAPClient($reprints_url, array('trace' => true));
+
+  // Prepare SoapHeader parameters
+  $header_parameters = array(
+    'UserName' => $reprints_username,
+    'Password' => $reprints_password
+  );
+  $headers = new SoapHeader(NS, 'UserCredentials', $header_parameters, false);
+
+  // Prepare SOAP Client
+  $client->__setSOAPHeaders(array($headers));
+
+  // Create the XML Request
+  $xml_request = create_xml_request($reprints_username, $args);
+
+  // Convert it to a valid SoapVar
+  $params = new SoapVar($xml_request->outputMemory(), XSD_ANYXML);
+
+  // Call the CheckAvailability service
+  try {
+    echo "Contacting Reprints Desk API. Please wait...\n\n";
+    $order_result = $client->Order_PlaceOrder2($params);
+  } catch (Exception $e) {
+    echo "** There was an error. Here is the debugging information. **\n\n";
+    echo "Request headers: \n" . $client->__getLastRequestHeaders();
+    echo "\n Request body: \n" . $client->__getLastRequest();
+    echo "\n Response headers: \n" . $client->__getLastResponseHeaders();
+    echo "\n Response body: \n" . $client->__getLastResponse();
+    echo "\n\n ** End of debugging information. ** \n\n";
+  }
+
+  // Success! Display results
+  if($order_result->Order_PlaceOrder2Result == 1) {
+    echo "Your order was successful!\n";
+    echo "\nOrder ID: " . $order_result->orderID;
+    echo "\nRnd ID: " . $order_result->rndID;
+    echo "\n\nThank you for using the FSU Libraries Expedited Article Service.\n";
+  } else {
+    echo "\n\nThere was an error processing your request.";
+  }
+
+  drupal_exit();
+}
+
+function create_xml_request($reprints_username, $args) {
+  global $user;
+  define ('NS', 'http://reprintsdesk.com/webservices/');
+  $reprints_order_type_id = variable_get('expedited_article_delivery_order_type_id');
+  $reprints_delivery_method_id = variable_get('expedited_article_delivery_method_id');
+  $reprints_user_email = variable_get('expedited_article_delivery_user_email');
+  $reprints_user_firstname = variable_get('expedited_article_delivery_user_firstname');
+  $reprints_user_lastname = variable_get('expedited_article_delivery_user_lastname')
+
+  $xml = new XMLWriter();
+  $xml->openMemory();
+  $xml->startElementNS('web','Order_PlaceOrder2', NS);
+  $xml->startElementNS('web','xmlNode', NS);
+  $xml->startElement('order');
+
+  // Section 1: Order detail
+  $xml->startElement('orderdetail');
+  addXMLElement($xml, 'ordertypeid', $reprints_order_type_id, FALSE);
+  addXMLElement($xml, 'deliverymethodid', $reprints_delivery_method_id, FALSE);
+  addXMLElement($xml, 'comment', '');
+  addXMLElement($xml, 'aulast', ''); 
+  addXMLElement($xml, 'aufirst', '');
+  addXMLElement($xml, 'issn', $args['issn']);
+  addXMLElement($xml, 'eissn', '');
+  addXMLElement($xml, 'isbn', '');
+  addXMLElement($xml, 'title', '', '');
+  addXMLElement($xml, 'atitle','', '');
+  addXMLElement($xml, 'volume', $args['volume']);
+  addXMLElement($xml, 'issue', $args['issue']);
+  addXMLElement($xml, 'spage', '');
+  addXMLElement($xml, 'epage', '');
+  addXMLElement($xml, 'pages', $args['pages']);
+  addXMLElement($xml, 'date', '');
+  addXMLElement($xml, 'doi', '');
+
+  // Section 2: User
+  $xml->startElement('user');
+  addXMLElement($xml, 'username', $reprints_username, FALSE);
+  addXMLElement($xml, 'email', $reprints_user_email, FALSE);
+  $xml->startElement('billingreference');
+  $xml->endElement();
+  addXMLElement($xml, 'firstname', $reprints_user_firstname);
+  addXMLElement($xml, 'lastname', $reprints_user_lastname);
+  $xml->endElement();
+
+  // Section 3: Delivery Profile
+  $xml->startElement('deliveryprofile');
+  addXMLElement($xml, 'firstname', '*');
+  addXMLElement($xml, 'lastname', '*');
+  addXMLElement($xml, 'companyname', '*');
+  addXMLElement($xml, 'address1', '*');
+  $xml->startElement('address2');
+  $xml->endElement();
+  addXMLElement($xml, 'city', '*');
+  addXMLElement($xml, 'statecode', 'FL');
+  $xml->startElement('statename');
+  $xml->endElement();
+  addXMLElement($xml, 'zip', '*');
+  addXMLElement($xml, 'countrycode', 'US');
+  addXMLElement($xml, 'email', $user->mail, FALSE);
+  addXMLElement($xml, 'phone', '*');
+  $xml->startElement('fax');
+  $xml->endElement();
+  $xml->endElement();
+
+  //Section 4: Processing Instructions
+  $xml->startElement('processinginstructions');
+
+  $xml->startElement('processinginstruction');
+  $xml->writeAttribute('id', 1);
+  $xml->writeAttribute('valueid', 1);
+  $xml->endElement();
+
+  $xml->endElement();
+
+  //Section 5: Customer References
+  $xml->startElement('customerreferences');
+
+  $xml->startElement('customerreference');
+  $xml->writeAttribute('id', 1);
+  $xml->startCdata();
+  $xml->text('ID#1234567');
+  $xml->endCdata();
+  $xml->endElement();  
+
+  $xml->endElement();
+
+  //End of Sections
+  $xml->endElement();
+  $xml->endElement();
+  $xml->endElement();
+
+  //Return our $xml object
+  return $xml;
+}
+
+function addXMLElement(&$xml, $elementName, $text, $cdata = TRUE) {
+  $xml->startElement($elementName);
+
+  if($cdata) {
+    $xml->startCdata();
+  }
+
+  $xml->text($text);
+
+  if($cdata) {
+    $xml->endCdata();
+  }
+
+  $xml->endElement();
+}
