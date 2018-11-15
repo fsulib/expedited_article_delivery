@@ -97,7 +97,9 @@ function create_xml_request(&$xml, $reprints_username, $args) {
   addXMLElement($xml, 'pages', $args['pages']);
   addXMLElement($xml, 'date', '');
   addXMLElement($xml, 'doi', '');
-
+  addXMLElement($xml, 'pubmedid', '');
+  $xml->endElement();
+  
   // Section 2: User
   $xml->startElement('user');
   addXMLElement($xml, 'username', $reprints_username, FALSE);
@@ -151,7 +153,6 @@ function create_xml_request(&$xml, $reprints_username, $args) {
   $xml->endElement();
 
   //End of Sections
-  $xml->endElement();
   $xml->endElement();
   $xml->endElement();
   $xml->endElement();
