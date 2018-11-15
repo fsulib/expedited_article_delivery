@@ -33,8 +33,9 @@ function expedited_article_delivery_reprints_order($args) {
   $client->__setSOAPHeaders(array($headers));
 
   // Create the XML Request
-  $xml_request = create_xml_request($reprints_username, $args);
-
+  $xml_request = new XMLWriter();  
+  create_xml_request($xml_request, $reprints_username, $args);
+  
   // Convert it to a valid SoapVar
   $params = new SoapVar($xml_request->outputMemory(), XSD_ANYXML);
 
@@ -64,16 +65,14 @@ function expedited_article_delivery_reprints_order($args) {
   drupal_exit();
 }
 
-function create_xml_request($reprints_username, $args) {
+function create_xml_request(&$xml, $reprints_username, $args) {
   global $user;
-  define ('NS', 'http://reprintsdesk.com/webservices/');
   $reprints_order_type_id = variable_get('expedited_article_delivery_order_type_id');
-  $reprints_delivery_method_id = variable_get('expedited_article_delivery_method_id');
+  $reprints_delivery_method_id = variable_get('expedited_article_delivery_delivery_method_id');
   $reprints_user_email = variable_get('expedited_article_delivery_user_email');
   $reprints_user_firstname = variable_get('expedited_article_delivery_user_firstname');
-  $reprints_user_lastname = variable_get('expedited_article_delivery_user_lastname')
+  $reprints_user_lastname = variable_get('expedited_article_delivery_user_lastname');
 
-  $xml = new XMLWriter();
   $xml->openMemory();
   $xml->startElementNS('web','Order_PlaceOrder2', NS);
   $xml->startElementNS('web','xmlNode', NS);
@@ -155,9 +154,10 @@ function create_xml_request($reprints_username, $args) {
   $xml->endElement();
   $xml->endElement();
   $xml->endElement();
+  $xml->endElement();
 
-  //Return our $xml object
-  return $xml;
+  //echo '<xmp>' . $xml->outputMemory() . '</xmp>';
+  //drupal_exit();
 }
 
 function addXMLElement(&$xml, $elementName, $text, $cdata = TRUE) {

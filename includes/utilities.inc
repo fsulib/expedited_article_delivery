@@ -18,8 +18,8 @@ function expedited_article_delivery_order_processor($args) {
       drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'issn_not_allowed')));
     } 
     else {
-      //module_load_include('inc', 'expedited_article_delivery', 'includes/reprints_api');
-      //expedited_article_delivery_reprints_order($args);
+      module_load_include('inc', 'expedited_article_delivery', 'includes/reprints_api');
+      expedited_article_delivery_reprints_order($args);
     }
   }
 }
