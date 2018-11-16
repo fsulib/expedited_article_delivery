@@ -156,9 +156,6 @@ function create_xml_request(&$xml, $reprints_username, $args) {
   $xml->endElement();
   $xml->endElement();
   $xml->endElement();
-
-  //echo '<xmp>' . $xml->outputMemory() . '</xmp>';
-  //drupal_exit();
 }
 
 function addXMLElement(&$xml, $elementName, $text, $cdata = TRUE) {
