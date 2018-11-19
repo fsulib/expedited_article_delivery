@@ -54,10 +54,7 @@ function expedited_article_delivery_reprints_order($args) {
 
   // Success! Display results
   if($order_result->Order_PlaceOrder2Result == 1) {
-    echo "Your order was successful!\n";
-    echo "\nOrder ID: " . $order_result->orderID;
-    echo "\nRnd ID: " . $order_result->rndID;
-    echo "\n\nThank you for using the FSU Libraries Expedited Article Service.\n";
+    drupal_goto('expedited_article_delivery/success', array('query' => array('order_id' => $order_result->orderID, 'rnd_id' => $order_result->rndID)));      
   } else {
     echo "\n\nThere was an error processing your request.";
   }

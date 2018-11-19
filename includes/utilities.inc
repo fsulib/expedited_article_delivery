@@ -25,24 +25,18 @@ function expedited_article_delivery_order_processor($args) {
 }
 
 function expedited_article_delivery_error_processor($args) {
-  echo "Error page";
 
-  switch ($args['reason']) {
+  return $args['reason'];
+  
+}
 
-    case 'incomplete_data':
-      echo "<p>Incomplete data!</p>";
-      break;
+function expedited_article_delivery_success_processor($args) {
 
-    case 'anonymous_user':
-      echo "<p>Anonymous user!</p>";
-      break;
-
-    case 'missing_roles':
-      echo "<p>Missing roles!</p>";
-      break;
-  }
-
-  drupal_exit();
+  $order_info =  array();
+  $order_info['order_id'] = $args['order_id'];
+  $order_info['rnd_id'] = $args['rnd_id'];
+  return $order_info;
+  
 }
 
 function expedited_article_delivery_check_roles($user) {
