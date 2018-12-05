@@ -183,7 +183,33 @@ function expedited_article_delivery_admin_form() {
     '#description' => t("The default phone number to be used when making Reprints API requests."),
     '#default_value' => variable_get('expedited_article_delivery_default_phone', ''),
   );
+  
+  $form['error_messages'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Error Messages'),
+  );
 
+  $form['error_messages']['expedited_article_delivery_error_login'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Credentials Error Message'),
+    '#description' => t("The message to display when user does not have correct credentials."),
+    '#default_value' => variable_get('expedited_article_delivery_error_login', ''),
+  );
+  
+  $form['error_messages']['expedited_article_delivery_error_availability'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Article Outside Expedited Service Criteria Message'),
+    '#description' => t("The message to display when the article does not meet expedited criteria."),
+    '#default_value' => variable_get('expedited_article_delivery_error_availability', ''),
+  );
+  
+  $form['error_messages']['expedited_article_delivery_error_reprints'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Reprints Error Message'),
+    '#description' => t("The message to display when reprints order returns an error."),
+    '#default_value' => variable_get('expedited_article_delivery_error_reprints', ''),
+  );
+  
   $form['save_configuration'] = array(
     '#type' => 'submit',
     '#name' => 'saveConfiguration',
@@ -230,6 +256,9 @@ function expedited_article_delivery_admin_form_submit($form, &$form_state) {
     variable_set('expedited_article_delivery_default_state', $form_state['values']['expedited_article_delivery_default_state']);
     variable_set('expedited_article_delivery_default_country', $form_state['values']['expedited_article_delivery_default_country']);
     variable_set('expedited_article_delivery_default_phone', $form_state['values']['expedited_article_delivery_default_phone']);
+    variable_set('expedited_article_delivery_error_login', $form_state['values']['expedited_article_delivery_error_login']);
+    variable_set('expedited_article_delivery_error_availability', $form_state['values']['expedited_article_delivery_error_availability']);
+    variable_set('expedited_article_delivery_error_reprints', $form_state['values']['expedited_article_delivery_error_reprints']);
     drupal_set_message("Your configurations have been saved.");
   }
 }
