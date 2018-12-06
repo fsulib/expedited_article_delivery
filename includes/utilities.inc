@@ -2,12 +2,14 @@
 
 function expedited_article_delivery_order_processor($args) {
   global $user;
+  global $base_url;
   if (!array_key_exists('issn', $args) || !array_key_exists('volume', $args) || !array_key_exists('issue', $args) || !array_key_exists('pages', $args)) {
     drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'incomplete_data')));
   }
   else if ($user->uid == 0){
     // Catch original link and send users to login so that they bounce back to /expedited_article_delivery/order with the original params
-    drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'anonymous_user')));
+    $login_url = variable_get('expedited_article_delivery_login_url') . $base_url . $_SERVER['REQUEST_URI'];
+    drupal_goto($login_url);
   }
   else if (!expedited_article_delivery_check_roles($user)) {
     drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'missing_roles')));
@@ -22,12 +24,6 @@ function expedited_article_delivery_order_processor($args) {
       expedited_article_delivery_reprints_order($args);
     }
   }
-}
-
-function expedited_article_delivery_error_processor($args) {
-
-  return $args['reason'];
-  
 }
 
 function expedited_article_delivery_success_processor($args) {

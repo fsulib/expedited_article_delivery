@@ -170,3 +170,10 @@ function addXMLElement(&$xml, $elementName, $text, $cdata = TRUE) {
 
   $xml->endElement();
 }
+
+function createMetadataStorage($args) {
+  $article_metadata = array();
+  
+  
+  return $article_metadata;
+}

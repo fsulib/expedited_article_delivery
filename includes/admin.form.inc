@@ -24,6 +24,13 @@ function expedited_article_delivery_admin_form() {
     '#default_value' => variable_get('expedited_article_delivery_spreadsheet_key', ''),
   );
 
+  $form['expedited_article_delivery_login_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Login URL'),
+    '#description' => t("The URL to send the user if they are not logged in."),
+    '#default_value' => variable_get('expedited_article_delivery_login_url', ''),
+  );
+  
   $formatted_roles = array();
   $roles = user_roles();
   foreach ($roles as $key => $value) {
@@ -233,6 +240,7 @@ function expedited_article_delivery_admin_form_submit($form, &$form_state) {
   }
   else {
     variable_set('expedited_article_delivery_spreadsheet_key', $form_state['values']['expedited_article_delivery_spreadsheet_key']);
+    variable_set('expedited_article_delivery_login_url', $form_state['values']['expedited_article_delivery_login_url']);
     variable_set('expedited_article_delivery_allowed_roles', $form_state['values']['expedited_article_delivery_allowed_roles']);
     variable_set('expedited_article_delivery_order_type_id', $form_state['values']['expedited_article_delivery_order_type_id']);
     variable_set('expedited_article_delivery_delivery_method_id', $form_state['values']['expedited_article_delivery_delivery_method_id']);

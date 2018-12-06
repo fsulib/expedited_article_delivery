@@ -84,8 +84,16 @@ function expedited_article_delivery_theme() {
  * Preprocess variables to be passed to the error page template assigned above in hook_theme().
  */
 function template_preprocess_expedited_article_delivery_error_page(&$variables) {
-  module_load_include('inc', 'expedited_article_delivery', 'includes/utilities');
-  $variables['error_code'] = expedited_article_delivery_error_processor($_GET);
+  switch ($_GET['reason']) {
+    case 'incomplete_data':
+      $variables['error_message'] = variable_get('expedited_article_delivery_error_availability');
+      break;
+    case 'missing_roles':
+      $variables['error_message'] = variable_get('expedited_article_delivery_error_login');
+      break;
+    default:
+      $variables['error_message'] = variable_get('expedited_article_delivery_error_reprints');
+  } 
 }
 
 /**
