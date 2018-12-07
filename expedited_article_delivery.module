@@ -96,13 +96,15 @@ function template_preprocess_expedited_article_delivery_error_page(&$variables) 
   } 
   
   // Create ILL Link
-  global $open_url_fields;
-  $ill_link = variable_get('expedited_article_delivery_ill_link');
+  $open_url = '';
+  $ill_link = variable_get('expedited_article_delivery_ill_url');
+  $args = unserialize($_SESSION['open_url_fields']);
   
-  foreach ($open_url_fields as $key => $value) {
-    $ill_link = $ill_link . $key . '=' . $value . '&';
+  foreach ($args as $key => $value) {
+    $open_url = $open_url . $key . '=' . $value . '&';
   }
   
+  $ill_link = $ill_link . $open_url;
   $variables['ill_link'] = $ill_link;
 }
 

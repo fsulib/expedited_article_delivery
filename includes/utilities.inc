@@ -3,9 +3,8 @@
 function expedited_article_delivery_order_processor($args) {
   global $user;
   global $base_url;
-  global $open_url_fields;
   
-  $open_url_fields = $args;
+  $_SESSION['open_url_fields'] = serialize($args);
   
   if (!array_key_exists('issn', $args) || !array_key_exists('volume', $args) || !array_key_exists('issue', $args) || !array_key_exists('pages', $args)) {
     drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'incomplete_data')));
