@@ -6,3 +6,5 @@
 ?>
 
 <?php print $error_message; ?>
+
+<h1><a href="<?php print $ill_link; ?>">GO TO ILL</a></h1>

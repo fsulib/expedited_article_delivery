@@ -94,6 +94,16 @@ function template_preprocess_expedited_article_delivery_error_page(&$variables) 
     default:
       $variables['error_message'] = variable_get('expedited_article_delivery_error_reprints');
   } 
+  
+  // Create ILL Link
+  global $open_url_fields;
+  $ill_link = variable_get('expedited_article_delivery_ill_link');
+  
+  foreach ($open_url_fields as $key => $value) {
+    $ill_link = $ill_link . $key . '=' . $value . '&';
+  }
+  
+  $variables['ill_link'] = $ill_link;
 }
 
 /**

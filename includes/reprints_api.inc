@@ -64,6 +64,7 @@ function expedited_article_delivery_reprints_order($args) {
 
 function create_xml_request(&$xml, $reprints_username, $args) {
   global $user;
+  $article_metadata = createMetadataStorage($args);
   $reprints_order_type_id = variable_get('expedited_article_delivery_order_type_id');
   $reprints_delivery_method_id = variable_get('expedited_article_delivery_delivery_method_id');
   $reprints_user_email = variable_get('expedited_article_delivery_user_email');
@@ -85,8 +86,8 @@ function create_xml_request(&$xml, $reprints_username, $args) {
   addXMLElement($xml, 'issn', $args['issn']);
   addXMLElement($xml, 'eissn', '');
   addXMLElement($xml, 'isbn', '');
-  addXMLElement($xml, 'title', '', '');
-  addXMLElement($xml, 'atitle','', '');
+  addXMLElement($xml, 'title', $article_metadata['title'], '');
+  addXMLElement($xml, 'atitle',$article_metadata['atitle'], '');
   addXMLElement($xml, 'volume', $args['volume']);
   addXMLElement($xml, 'issue', $args['issue']);
   addXMLElement($xml, 'spage', '');
@@ -174,6 +175,19 @@ function addXMLElement(&$xml, $elementName, $text, $cdata = TRUE) {
 function createMetadataStorage($args) {
   $article_metadata = array();
   
+  if(array_key_exists('title', $args)) {
+    $article_metadata['title'] = $args['title'];
+  }
+  else {
+    $article_metadata['title'] = '';
+  }
+  
+  if(array_key_exists('atitle', $args)) {
+    $article_metadata['atitle'] = $args['atitle'];
+  }
+  else {
+    $article_metadata['atitle'] = '';
+  }
   
   return $article_metadata;
 }
