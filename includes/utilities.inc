@@ -10,12 +10,13 @@ function expedited_article_delivery_order_processor($args) {
     drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'incomplete_data')));
   }
   else if ($user->uid == 0){
+    $timestamp = time();
     // Catch original link and send users to login so that they bounce back to /expedited_article_delivery/order with the original params
     $login_url = variable_get('expedited_article_delivery_login_url'); 
     $redirect_url = $base_url . $_SERVER['REQUEST_URI'];
-    $timestamp = time();
+    $cas_destination_url = '/cas?destination=expedited_article_delivery/redirect/' . $timestamp;
     variable_set($timestamp, $redirect_url);
-    drupal_goto($login_url . $base_url . '/expedited_article_delivery/redirect/' . $timestamp);
+    drupal_goto($login_url . urlencode($base_url) . urlencode($cas_destination_url));
   }
   else if (!expedited_article_delivery_check_roles($user)) {
     drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'missing_roles')));
