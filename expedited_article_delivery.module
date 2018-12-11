@@ -19,6 +19,12 @@ function expedited_article_delivery_menu() {
     'page callback' => 'expedited_article_delivery_order_responder',
     'access callback' => TRUE,
   );
+  
+  $items['expedited_article_delivery/redirect/%'] = array (
+    'page callback' => 'expedited_article_delivery_redirect',
+    'page arguments' => array(2),
+    'access callback' => TRUE,
+  );
 
   $items['expedited_article_delivery/error'] = array (
     'page callback' => 'expedited_article_delivery_error',
@@ -52,6 +58,13 @@ function expedited_article_delivery_permission() {
 function expedited_article_delivery_order_responder() {
   module_load_include('inc', 'expedited_article_delivery', 'includes/utilities');
   expedited_article_delivery_order_processor($_GET);
+}
+
+function expedited_article_delivery_redirect($timestamp) {
+  $open_url = variable_get($timestamp);
+  drupal_set_message($open_url);
+  variable_del($timestamp);
+  drupal_goto($open_url);
 }
 
 function expedited_article_delivery_error() {
