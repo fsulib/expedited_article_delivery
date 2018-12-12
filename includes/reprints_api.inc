@@ -81,20 +81,20 @@ function create_xml_request(&$xml, $reprints_username, $args) {
   addXMLElement($xml, 'ordertypeid', $reprints_order_type_id, FALSE);
   addXMLElement($xml, 'deliverymethodid', $reprints_delivery_method_id, FALSE);
   addXMLElement($xml, 'comment', '');
-  addXMLElement($xml, 'aulast', ''); 
-  addXMLElement($xml, 'aufirst', '');
+  addXMLElement($xml, 'aulast', $article_metadata['aulast']); 
+  addXMLElement($xml, 'aufirst', $article_metadata['aufirst']);
   addXMLElement($xml, 'issn', $args['issn']);
-  addXMLElement($xml, 'eissn', '');
-  addXMLElement($xml, 'isbn', '');
+  addXMLElement($xml, 'eissn', $article_metadata['eissn']);
+  addXMLElement($xml, 'isbn', $article_metadata['isbn']);
   addXMLElement($xml, 'title', $article_metadata['title'], '');
   addXMLElement($xml, 'atitle',$article_metadata['atitle'], '');
   addXMLElement($xml, 'volume', $args['volume']);
   addXMLElement($xml, 'issue', $args['issue']);
-  addXMLElement($xml, 'spage', '');
-  addXMLElement($xml, 'epage', '');
+  addXMLElement($xml, 'spage', $article_metadata['spage']);
+  addXMLElement($xml, 'epage', $article_metadata['epage']);
   addXMLElement($xml, 'pages', $args['pages']);
-  addXMLElement($xml, 'date', '');
-  addXMLElement($xml, 'doi', '');
+  addXMLElement($xml, 'date', $article_metadata['date']);
+  addXMLElement($xml, 'doi', $article_metadata['doi']);
   addXMLElement($xml, 'pubmedid', '');
   $xml->endElement();
   
@@ -174,6 +174,34 @@ function addXMLElement(&$xml, $elementName, $text, $cdata = TRUE) {
 
 function createMetadataStorage($args) {
   $article_metadata = array();
+ 
+  if(array_key_exists('aulast', $args)) {
+    $article_metadata['aulast'] = $args['aulast'];
+  }
+  else {
+    $article_metadata['aulast'] = '';
+  }
+  
+  if(array_key_exists('aufirst', $args)) {
+    $article_metadata['aufirst'] = $args['aufirst'];
+  }
+  else {
+    $article_metadata['aufirst'] = '';
+  }
+  
+  if(array_key_exists('eissn', $args)) {
+    $article_metadata['eissn'] = $args['eissn'];
+  }
+  else {
+    $article_metadata['eissn'] = '';
+  }
+  
+  if(array_key_exists('isbn', $args)) {
+    $article_metadata['isbn'] = $args['isbn'];
+  }
+  else {
+    $article_metadata['isbn'] = '';
+  }
   
   if(array_key_exists('title', $args)) {
     $article_metadata['title'] = $args['title'];
@@ -187,6 +215,34 @@ function createMetadataStorage($args) {
   }
   else {
     $article_metadata['atitle'] = '';
+  }
+  
+  if(array_key_exists('spage', $args)) {
+    $article_metadata['spage'] = $args['spage'];
+  }
+  else {
+    $article_metadata['spage'] = '';
+  }
+  
+  if(array_key_exists('epage', $args)) {
+    $article_metadata['epage'] = $args['epage'];
+  }
+  else {
+    $article_metadata['epage'] = '';
+  }
+  
+  if(array_key_exists('date', $args)) {
+    $article_metadata['date'] = $args['date'];
+  }
+  else {
+    $article_metadata['date'] = '';
+  }
+  
+  if(array_key_exists('doi', $args)) {
+    $article_metadata['doi'] = $args['doi'];
+  }
+  else {
+    $article_metadata['doi'] = '';
   }
   
   return $article_metadata;

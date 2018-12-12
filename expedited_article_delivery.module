@@ -62,7 +62,6 @@ function expedited_article_delivery_order_responder() {
 
 function expedited_article_delivery_redirect($timestamp) {
   $open_url = variable_get($timestamp);
-  drupal_set_message($open_url);
   variable_del($timestamp);
   drupal_goto($open_url);
 }
