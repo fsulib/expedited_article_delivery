@@ -128,4 +128,5 @@ function template_preprocess_expedited_article_delivery_success_page(&$variables
   $order_info = expedited_article_delivery_success_processor($_GET); 
   $variables['order_id'] = $order_info['order_id'];
   $variables['rnd_id'] = $order_info['rnd_id'];
+  $variables['success_message'] = variable_get('expedited_article_delivery_success_message');
  }

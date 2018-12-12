@@ -200,7 +200,7 @@ function expedited_article_delivery_admin_form() {
   
   $form['error_messages'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Error Messages'),
+    '#title' => t('Workflow Messages'),
   );
 
   $form['error_messages']['expedited_article_delivery_error_login'] = array(
@@ -222,6 +222,13 @@ function expedited_article_delivery_admin_form() {
     '#title' => t('Reprints Error Message'),
     '#description' => t("The message to display when reprints order returns an error."),
     '#default_value' => variable_get('expedited_article_delivery_error_reprints', ''),
+  );
+  
+  $form['error_messages']['expedited_article_delivery_success_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Success Message'),
+    '#description' => t("The message to display when an ordered is successfully sent."),
+    '#default_value' => variable_get('expedited_article_delivery_success_message', ''),
   );
   
   $form['save_configuration'] = array(
@@ -275,6 +282,7 @@ function expedited_article_delivery_admin_form_submit($form, &$form_state) {
     variable_set('expedited_article_delivery_error_login', $form_state['values']['expedited_article_delivery_error_login']);
     variable_set('expedited_article_delivery_error_availability', $form_state['values']['expedited_article_delivery_error_availability']);
     variable_set('expedited_article_delivery_error_reprints', $form_state['values']['expedited_article_delivery_error_reprints']);
+    variable_set('expedited_article_delivery_success_message', $form_state['values']['expedited_article_delivery_success_message']);
     drupal_set_message("Your configurations have been saved.");
   }
 }

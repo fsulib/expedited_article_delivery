@@ -10,5 +10,6 @@
   <p>Your order was successful!</p>
   <p><strong>Order ID: </strong><?php print $order_id; ?><br />
   <strong>Rnd ID: </strong><?php print $rnd_id; ?></p>
-  <p>Thank you for using the FSU Libraries Expedited Article Delivery service.</p>
+  <?php print $success_message; ?>
+  
 
