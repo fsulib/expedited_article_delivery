@@ -6,8 +6,11 @@ function expedited_article_delivery_order_processor($args) {
   
   $_SESSION['open_url_fields'] = serialize($args);
   
-  if (!array_key_exists('issn', $args) || !array_key_exists('volume', $args) || !array_key_exists('issue', $args) || !array_key_exists('pages', $args)) {
+  if (!expedited_article_delivery_full_metadata($args)) {
     drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'incomplete_data')));
+  }
+  else if (!expedited_article_delivery_date_check($args['date'])) {
+    drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'out_of_date')));
   }
   else if ($user->uid == 0){
     $timestamp = time();
@@ -40,6 +43,38 @@ function expedited_article_delivery_success_processor($args) {
   $order_info['rnd_id'] = $args['rnd_id'];
   return $order_info;
   
+}
+
+function expedited_article_delivery_full_metadata($args) {
+  if(!array_key_exists('issn', $args) || !array_key_exists('volume', $args) 
+      || !array_key_exists('issue', $args) || !array_key_exists('pages', $args)
+      || !array_key_exists('date', $args)) 
+  {
+    return false;
+  } 
+  else 
+  {
+    return true;
+  }
+}
+
+function expedited_article_delivery_date_check($date) {
+  $year = substr($date, 0, 4);
+  $month = substr($date, 4, 2);
+  $day = substr($date, 6, 2);
+  $article_timestamp = mktime(0,0,0,$month,$day,$year);
+  
+  $now = time();
+  $delta = 3600*24*30*60;
+  
+  if($article_timestamp > ($now-$delta)) 
+  {
+    return true;
+  } 
+  else 
+  {
+    return false;
+  }
 }
 
 function expedited_article_delivery_check_roles($user) {

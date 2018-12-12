@@ -100,6 +100,9 @@ function template_preprocess_expedited_article_delivery_error_page(&$variables) 
     case 'incomplete_data':
       $variables['error_message'] = variable_get('expedited_article_delivery_error_availability');
       break;
+    case 'out_of_date':
+      $variables['error_message'] = variable_get('expedited_article_delivery_error_availability');
+      break;
     case 'missing_roles':
       $variables['error_message'] = variable_get('expedited_article_delivery_error_login');
       break;
