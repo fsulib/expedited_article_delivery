@@ -7,4 +7,4 @@
 
 <?php print $error_message; ?>
 
-<h1><a href="<?php print $ill_link; ?>">GO TO ILL</a></h1>
+<h3 class="h3-button"><a href="<?php print $ill_link; ?>">Request this Article through Interlibrary Loan</a></h3>
