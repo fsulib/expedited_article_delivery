@@ -8,8 +8,98 @@
 /**
  * Implements hook_schema().
  */
-/*
+
 function expedited_article_delivery_schema() {
-  $schema = array();
+  $schema['expedited_article_delivery'] = array(
+    'description' => 'Stores information on articles requested.',
+    'fields' => array(
+      'id'  => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique ID.',
+      ),
+      'uid'  => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'User who requested the title.',
+      ),
+      'issn' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'description' => 'The ISSN of the journal being requested.',
+      ),
+      'atitle' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'The title of the article being requested.',
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'The title of the journal being requested.',
+      ),
+      'volume' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => 'Volume of the Journal being requested.',
+      ),
+      'issue' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => 'Issue of the Journal being requested.',
+      ),
+      'pages' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => 'Issue of the Journal being requested.',
+      ),
+      'date' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => 'Date of publication for the Journal being requested.',
+      ),
+      'doi' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => 'DOI of the article being requested.',
+      ),
+      'pubmedid' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => 'PubMedID of the article being requested.',
+      ),
+      'orderid' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => 'Reprints Order ID.',
+      ),
+      'rid' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => 'Reprints R ID.',
+      ),
+      'error_code' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => 'Error code if ordered failed.',
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+
+  return $schema;
 }
-*/
+

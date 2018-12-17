@@ -39,7 +39,7 @@ function expedited_article_delivery_reprints_order($args) {
   // Convert it to a valid SoapVar
   $params = new SoapVar($xml_request->outputMemory(), XSD_ANYXML);
 
-  // Call the CheckAvailability service
+  // Call the Place Order service
   try {
     echo "Contacting Reprints Desk API. Please wait...\n\n";
     $order_result = $client->Order_PlaceOrder2($params);
@@ -54,6 +54,7 @@ function expedited_article_delivery_reprints_order($args) {
 
   // Success! Display results
   if($order_result->Order_PlaceOrder2Result == 1) {
+    log_order($order_result, $args);
     drupal_goto('expedited_article_delivery/success', array('query' => array('order_id' => $order_result->orderID, 'rnd_id' => $order_result->rndID)));      
   } else {
     echo "\n\nThere was an error processing your request.";
@@ -246,4 +247,25 @@ function createMetadataStorage($args) {
   }
   
   return $article_metadata;
+}
+
+function log_order($order_result, $args) {
+  global $user;
+  
+  $article_metadata = createMetadataStorage($args);
+  
+  $query = db_insert('expedited_articles_delivery')->fields(array(
+    'uid' => $user->uid, 
+    'issn' => $args['issn'], 
+    'atitle' => $article_metadata['atitle'], 
+    'title' => $article_metadata['title'], 
+    'volume' => $args['volume'], 
+    'issue' => $args['issue'], 
+    'pages' => $args['pages'], 
+    'date' => $article_metadata['date'], 
+    'doi' => $article_metadata['doi'], 
+    'orderid' => $order_result->orderID, 
+    'rid' => $order_result->rndID,
+  ))->execute();
+  
 }
