@@ -254,7 +254,7 @@ function log_order($order_result, $args) {
   
   $article_metadata = createMetadataStorage($args);
   
-  $query = db_insert('expedited_articles_delivery')->fields(array(
+  $query = db_insert('expedited_article_delivery')->fields(array(
     'uid' => $user->uid, 
     'issn' => $args['issn'], 
     'atitle' => $article_metadata['atitle'], 
