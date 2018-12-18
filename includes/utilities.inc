@@ -26,7 +26,7 @@ function expedited_article_delivery_order_processor($args) {
   }
   else {
     $issns = expedited_article_delivery_get_issns();
-    if (!in_array('"'.$args['issn'].'"', $issns)) {
+    if (!in_array('"'.$args['ISSN'].'"', $issns)) {
       drupal_goto('expedited_article_delivery/error', array('query' => array('reason' => 'issn_not_allowed')));
     } 
     else {
@@ -46,8 +46,7 @@ function expedited_article_delivery_success_processor($args) {
 }
 
 function expedited_article_delivery_full_metadata($args) {
-  if(!array_key_exists('issn', $args) || !array_key_exists('volume', $args) 
-      || !array_key_exists('issue', $args) || !array_key_exists('pages', $args)
+  if(!array_key_exists('ISSN', $args) || !array_key_exists('pages', $args)
       || !array_key_exists('date', $args)) 
   {
     return false;

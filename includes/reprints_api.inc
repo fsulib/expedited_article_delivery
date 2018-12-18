@@ -84,7 +84,7 @@ function create_xml_request(&$xml, $reprints_username, $args) {
   addXMLElement($xml, 'comment', '');
   addXMLElement($xml, 'aulast', $article_metadata['aulast']); 
   addXMLElement($xml, 'aufirst', $article_metadata['aufirst']);
-  addXMLElement($xml, 'issn', $args['issn']);
+  addXMLElement($xml, 'issn', $args['ISSN']);
   addXMLElement($xml, 'eissn', $article_metadata['eissn']);
   addXMLElement($xml, 'isbn', $article_metadata['isbn']);
   addXMLElement($xml, 'title', $article_metadata['title'], '');
@@ -190,8 +190,8 @@ function createMetadataStorage($args) {
     $article_metadata['aufirst'] = '';
   }
   
-  if(array_key_exists('eissn', $args)) {
-    $article_metadata['eissn'] = $args['eissn'];
+  if(array_key_exists('EISSN', $args)) {
+    $article_metadata['eissn'] = $args['EISSN'];
   }
   else {
     $article_metadata['eissn'] = '';
@@ -256,7 +256,7 @@ function log_order($order_result, $args) {
   
   $query = db_insert('expedited_article_delivery')->fields(array(
     'uid' => $user->uid, 
-    'issn' => $args['issn'], 
+    'issn' => $args['ISSN'], 
     'atitle' => $article_metadata['atitle'], 
     'title' => $article_metadata['title'], 
     'volume' => $args['volume'], 
