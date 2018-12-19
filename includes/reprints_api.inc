@@ -65,6 +65,7 @@ function expedited_article_delivery_reprints_order($args) {
 
 function create_xml_request(&$xml, $reprints_username, $args) {
   global $user;
+  $user_fields = user_load($user->uid);
   $article_metadata = createMetadataStorage($args);
   $reprints_order_type_id = variable_get('expedited_article_delivery_order_type_id');
   $reprints_delivery_method_id = variable_get('expedited_article_delivery_delivery_method_id');
@@ -111,8 +112,8 @@ function create_xml_request(&$xml, $reprints_username, $args) {
 
   // Section 3: Delivery Profile
   $xml->startElement('deliveryprofile');
-  addXMLElement($xml, 'firstname', '*');
-  addXMLElement($xml, 'lastname', '*');
+  addXMLElement($xml, 'firstname', $user_fields->field_first_name['und']['0']['value']);
+  addXMLElement($xml, 'lastname', $user_fields->field_last_name['und']['0']['value']);
   addXMLElement($xml, 'companyname', '*');
   addXMLElement($xml, 'address1', '*');
   $xml->startElement('address2');
