@@ -36,6 +36,11 @@ function expedited_article_delivery_menu() {
     'access callback' => TRUE,
   );
   
+  $items['expedited_article_delivery/order_report'] = array (
+    'page callback' => 'expedited_article_delivery_order_report',
+    'access arguments' => array('download expedited article delivery report'),
+  );
+  
   return $items;
 }
 
@@ -48,6 +53,10 @@ function expedited_article_delivery_permission() {
     'administer expedited article delivery' => array(
       'title' => 'Administer Expedited Article Delivery',
       'description' => 'Manage the configuration of the Expedited Article Delivery module',
+    ),
+    'download expedited article delivery report' => array(
+      'title' => 'Download Expedited Article Delivery Report',
+      'description' => 'Download the order report',
     ),
   );
 }
@@ -74,6 +83,32 @@ function expedited_article_delivery_error() {
 function expedited_article_delivery_success() {
   $content = theme('expedited_article_delivery_success_page');
   return $content;
+}
+
+function expedited_article_delivery_order_report() {
+
+  //Request all data in database table
+  $orders = db_select('expedited_article_delivery', 'c')->fields('c')->execute()->fetchAll();
+  
+  //add necessary headers for browsers
+  drupal_add_http_header('Content-Type', 'text/csv; utf-8');
+  drupal_add_http_header('Content-Disposition', 'attachment; filename = order_report.csv');
+ 
+  //instead of writing down to a file we write to the output stream
+  $fh = fopen('php://output', 'w');
+ 
+  //form header
+  fputcsv($fh, array(t('id'), t('uid'), t('issn'), t('atitle'), t('title'), t('volume'), t('issue'), t('pages'), t('date'),
+    t('doi'), t('pubmedid'), t('orderid'), t('rid'), t('error_code')));
+ 
+  //write data in the CSV format
+  foreach ($orders as $order) {
+    fputcsv($fh, array($order->id, $order->uid, $order->issn, $order->atitle, $order->title, $order->volume, $order->issue,
+      $order->pages, $order->date, $order->doi, $order->pubmedid, $order->orderid, $order->rid, $order->error_code));
+  }
+ 
+  //close the stream
+  fclose($fh); 
 }
 
 /**
